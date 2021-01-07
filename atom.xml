@@ -6,7 +6,7 @@
   <link href="https://blog.zshunshun.cn/atom.xml" rel="self"/>
   
   <link href="https://blog.zshunshun.cn/"/>
-  <updated>2021-01-07T05:46:59.064Z</updated>
+  <updated>2021-01-07T06:09:11.031Z</updated>
   <id>https://blog.zshunshun.cn/</id>
   
   <author>
@@ -17,13 +17,13 @@
   <generator uri="https://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Windows10使用笔记 - 精简版</title>
+    <title>Windows10使用笔记</title>
     <link href="https://blog.zshunshun.cn/2021/01/07/Windows10%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0%20-%20%E7%B2%BE%E7%AE%80%E7%89%88/"/>
     <id>https://blog.zshunshun.cn/2021/01/07/Windows10%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0%20-%20%E7%B2%BE%E7%AE%80%E7%89%88/</id>
     <published>2021-01-07T01:18:06.000Z</published>
-    <updated>2021-01-07T05:46:59.064Z</updated>
+    <updated>2021-01-07T06:09:11.031Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="1、软链接"><a href="#1、软链接" class="headerlink" title="1、软链接"></a>1、软链接</h3><p><strong>1.1、创建软链接</strong>：将D盘的文件或文件夹链接至C盘，可以直接使用C盘的链接文件，实际操作的文件存在D盘，可以降低C盘空间，又不影响某些软件的使用。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mklink /d 连接路径  目标路径</span></span><br><span class="line">mklink /d C:\test\linkDirA D:\linkDir\linkDirA</span><br></pre></td></tr></table></figure><p><strong>1.2、删除软链接</strong>：在windows资源管理器中可以直接删除带有链接符号的文件或文件夹，不影响原始文件，命令行使用<kbd>rmdir</kbd>删除链接文件夹。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmdir C:\test\linkDirA</span><br></pre></td></tr></table></figure><p><strong>注意</strong>：如果使用<kbd>del</kbd>命令，会将原始文件删除。</p>]]></content>
+    <content type="html"><![CDATA[<h3 id="1、软链接"><a href="#1、软链接" class="headerlink" title="1、软链接"></a>1、软链接</h3><p><strong>1.1、创建软链接</strong>：将D盘的文件或文件夹链接至C盘，可以直接使用C盘的链接文件，实际操作的文件存在D盘，可以降低C盘空间，又不影响某些软件的使用。</p><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> mklink /d 链接路径  目标路径</span></span><br><span class="line">mklink /d C:\test\linkDirA D:\linkDir\linkDirA</span><br></pre></td></tr></table></figure><p><strong>1.2、删除软链接</strong>：在windows资源管理器中可以直接删除带有链接符号的文件或文件夹，不影响原始文件，命令行使用<kbd>rmdir</kbd>删除链接文件夹。</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">rmdir C:\test\linkDirA</span><br></pre></td></tr></table></figure><p><strong>注意</strong>：如果使用<kbd>del</kbd>命令，会将原始文件删除。</p>]]></content>
     
     
       
