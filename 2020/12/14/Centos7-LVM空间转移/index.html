@@ -25,20 +25,12 @@
 <meta property="og:site_name" content="抬头看云的博客">
 <meta property="og:description" content="一、背景安装了Centos7之后，发现root分区不够用，而大部分分区都在home。磁盘是通过LVM进行管理，可以在线将home分区缩减，并将root分区扩容。由于LVM的特性，逻辑卷扩容时不需要卸载分区，可以实现不停机扩容。 二、知识1、LVM介绍LVM 是一种可用在Linux内核的逻辑分卷管理器；可用于管理磁盘驱动器或其他类似的大容量存储设备。LVM独立于物理磁盘，可以实现存储空间的抽象化并在">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://tva3.sinaimg.cn/large/007jotORgy1glnd9inammj30he08tglu.jpg">
-<meta property="og:image" content="https://tva2.sinaimg.cn/large/007jotORgy1glndei4onjj30ef0283yd.jpg">
-<meta property="og:image" content="https://tvax1.sinaimg.cn/large/007jotORgy1glndg5hb9bj30h408fq34.jpg">
-<meta property="og:image" content="https://tvax1.sinaimg.cn/large/007jotORgy1glndj59zpzj30ku05hdg6.jpg">
-<meta property="og:image" content="https://tva3.sinaimg.cn/large/007jotORgy1glndnkjtryj30fm04emxa.jpg">
-<meta property="og:image" content="https://tvax4.sinaimg.cn/large/007jotORgy1glndoxh5c2j30h608baa8.jpg">
-<meta property="og:image" content="https://tva2.sinaimg.cn/large/007jotORgy1glndrdc3sdj30iq04vgls.jpg">
 <meta property="article:published_time" content="2020-12-14T01:54:55.000Z">
-<meta property="article:modified_time" content="2023-11-30T01:53:47.416Z">
+<meta property="article:modified_time" content="2023-11-30T15:05:41.719Z">
 <meta property="article:author" content="抬头看云">
 <meta property="article:tag" content="运维">
 <meta property="article:tag" content="centos7">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://tva3.sinaimg.cn/large/007jotORgy1glnd9inammj30he08tglu.jpg">
   <!-- Canonical links -->
   <link rel="canonical" href="https://blog.zshunshun.cn/2020/12/14/Centos7-LVM%E7%A9%BA%E9%97%B4%E8%BD%AC%E7%A7%BB/index.html">
   
@@ -388,9 +380,7 @@
 <p><strong>物理块 (PE)</strong></p>
 <p>一个卷组中最小的连续区域(默认为4 MiB)，多个物理块将被分配给一个逻辑卷。你可以把它看成物理卷的一部分，这部分可以被分配给一个逻辑卷。</p>
 <p>示例：</p>
-<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">`物理硬盘`</span><br><span class="line">                 </span><br><span class="line">   硬盘1 (/dev/sda):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </span><br><span class="line">     |分区1 50GB (物理卷)           |分区2 80GB (物理卷)            |</span><br><span class="line">     |/dev/sda1                    |/dev/sda2                     |</span><br><span class="line">     |_ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_ _ _ _ _ _ _ _ _ _ _ _ _ _ __|</span><br><span class="line">                                   </span><br><span class="line">   硬盘2 (/dev/sdb):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</span><br><span class="line">     |分区1 120GB (物理卷)                         |</span><br><span class="line">     |/dev/sdb1                                   |</span><br><span class="line">     | _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|</span><br><span class="line">     </span><br><span class="line">`LVM逻辑卷`</span><br><span class="line"> </span><br><span class="line">   卷组（Volume Group1） (/dev/MyVolGroup/ = /dev/sda1 + /dev/sda2 + /dev/sdb1):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </span><br><span class="line">     |逻辑卷1 15GB                  |逻辑卷2 35GB                        |逻辑卷3 200GB                           |</span><br><span class="line">     |/dev/MyVolGroup/rootvol        |/dev/MyVolGroup/homevol             |/dev/MyVolGroup/mediavol           |</span><br><span class="line">     |_ _ _ _ _ _ _ _ _ _ _ _ _ _ __|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ __ |_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|</span><br></pre></td></tr></table></figure>
-
-
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">`物理硬盘`</span><br><span class="line">               </span><br><span class="line">   硬盘1 (/dev/sda):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </span><br><span class="line">     |分区1 50GB (物理卷)           |分区2 80GB (物理卷)            |</span><br><span class="line">     |/dev/sda1                    |/dev/sda2                     |</span><br><span class="line">     |_ _ _ _ _ _ _ _ _ _ _ _ _ _ _|_ _ _ _ _ _ _ _ _ _ _ _ _ _ __|</span><br><span class="line">                                 </span><br><span class="line">   硬盘2 (/dev/sdb):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _</span><br><span class="line">     |分区1 120GB (物理卷)                         |</span><br><span class="line">     |/dev/sdb1                                   |</span><br><span class="line">     | _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|</span><br><span class="line">   </span><br><span class="line">`LVM逻辑卷`</span><br><span class="line"> </span><br><span class="line">   卷组（Volume Group1） (/dev/MyVolGroup/ = /dev/sda1 + /dev/sda2 + /dev/sdb1):</span><br><span class="line">      _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ </span><br><span class="line">     |逻辑卷1 15GB                  |逻辑卷2 35GB                        |逻辑卷3 200GB                           |</span><br><span class="line">     |/dev/MyVolGroup/rootvol        |/dev/MyVolGroup/homevol             |/dev/MyVolGroup/mediavol           |</span><br><span class="line">     |_ _ _ _ _ _ _ _ _ _ _ _ _ _ __|_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ __ |_ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _ _|</span><br></pre></td></tr></table></figure>
 
 <h4 id="2、System-Storage-Manager介绍"><a href="#2、System-Storage-Manager介绍" class="headerlink" title="2、System Storage Manager介绍"></a>2、System Storage Manager介绍</h4><p><strong>System Storage Manager</strong>是一个用来管理各种文件系统的命令行工具，可以管理包括LVM、btrfs和加密卷等文件系统，可以简化存储管理。通过ssm可以自动完成lvm自动完成<strong>LVM的创建，文件系统创建和挂载</strong>。下面，我们通过ssm工具将home分区空间转移到root分区。</p>
 <h3 id="三、实践"><a href="#三、实践" class="headerlink" title="三、实践"></a>三、实践</h3><h4 id="1、查看分区情况"><a href="#1、查看分区情况" class="headerlink" title="1、查看分区情况"></a>1、查看分区情况</h4><p>在root空间不够用时，笔者尝试过其他教程，将home空间缩小，其中的一部分给root，但是失败了，从资料3得知可能home的文件系统不支持缩减，故直接删除。</p>
@@ -404,41 +394,32 @@
 <p><strong>⭐查看分区</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm list</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva3.sinaimg.cn/large/007jotORgy1glnd9inammj30he08tglu.jpg" alt="修改前空间信息"></p>
-<p>可以看出root分区只有50G空间，home分区有237G空间。</p>
+<p>发现root分区只有50G空间，home分区有237G空间。</p>
 <p><strong>⭐卸载home</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">umount /home</span><br></pre></td></tr></table></figure>
 
 <p><strong>⭐删除逻辑卷home</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm remove /dev/centos/home</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tva2.sinaimg.cn/large/007jotORgy1glndei4onjj30ef0283yd.jpg" alt="卸载home分区"></p>
 <p><strong>⭐查看释放出来的空间</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm list</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tvax1.sinaimg.cn/large/007jotORgy1glndg5hb9bj30h408fq34.jpg" alt="修改后空间信息"></p>
 <p>home逻辑卷已经成功被删除，卷组centos有237.18G的空余，可以分配给root分区。</p>
 <p><strong>⭐将剩余空间全部加入root分区</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm resize -s +100%FREE /dev/centos/root</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tvax1.sinaimg.cn/large/007jotORgy1glndj59zpzj30ku05hdg6.jpg" alt="给root分区重新分配大小"></p>
 <p>root逻辑卷已经从50G增加到287.18G，由于此时操作的是LVM，文件系统并未更新分区信息，centos7还需要执行xfs_growfs同步文件系统。</p>
 <p><strong>⭐同步文件系统</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xfs_growfs /dev/centos/root</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://tva3.sinaimg.cn/large/007jotORgy1glndnkjtryj30fm04emxa.jpg" alt="更新空间信息"></p>
 <p><strong>⭐查看修改后的卷信息</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ssm list</span><br></pre></td></tr></table></figure>
 
-<p><img src="https://tvax4.sinaimg.cn/large/007jotORgy1glndoxh5c2j30h608baa8.jpg" alt="分配后root空间大小"></p>
 <p>此时，home逻辑卷已经被删除，腾出的空间都增加到root逻辑卷，目标完成。由于home分区已经被删除，还需要修改/etc/fstab文件,将挂载home的一行注释或者删除掉。</p>
 <p><strong>⭐取消挂载home</strong></p>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim /etc/fstab</span><br></pre></td></tr></table></figure>
-
-<p><img src="https://tva2.sinaimg.cn/large/007jotORgy1glndrdc3sdj30iq04vgls.jpg" alt="修改fstab文件-取消挂载home分区"></p>
 <p>将红框那一行注释或者删除，wq保存退出，大功告成。</p>
 <h3 id="三、资料"><a href="#三、资料" class="headerlink" title="三、资料"></a>三、资料</h3><p>1、archlinux-文档：<a target="_blank" rel="noopener" href="https://wiki.archlinux.org/index.php/LVM_(%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87)">LVM_(简体中文)</a></p>
-<p>2、哔哩哔哩-部分原理和操作：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av17646431">LInux LVM分区于应用详解</a></p>
+<p>2、哔哩哔哩-部分原理和操作：<a target="_blank" rel="noopener" href="https://www.bilibili.com/video/av17646431">LInux LVM分区于应用详解</a></p>
 <p>3、csdn：<a target="_blank" rel="noopener" href="https://blog.csdn.net/lpwmm/article/details/103886830">CentOS7 LVM管理 把/home空间转移给/</a></p>
 
       
