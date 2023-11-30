@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head>
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000" />
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top" />
+  
+  
+  <title>GoReplay-流量录制与回放 | 抬头看云的博客</title>
+  <meta name="description" content="GoReplay简介GoReplay是一个开源的网络监控工具，它可以记录你的实时流量，并用于跟踪、负载测试、监控和详细分析。录制的流量可以在测试服务器上回放，并支持请求放大，用于性能测试。github主页: https:&#x2F;&#x2F;github.com&#x2F;buger&#x2F;goreplay   GoReplay安装—linux1234# 下载安装包wget https:&#x2F;&#x2F;github.com&#x2F;buger&#x2F;gor">
+<meta property="og:type" content="article">
+<meta property="og:title" content="GoReplay-流量录制与回放">
+<meta property="og:url" content="https://blog.zshunshun.cn/2020/12/17/GoReplay-%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6%E4%B8%8E%E5%9B%9E%E6%94%BE/index.html">
+<meta property="og:site_name" content="抬头看云的博客">
+<meta property="og:description" content="GoReplay简介GoReplay是一个开源的网络监控工具，它可以记录你的实时流量，并用于跟踪、负载测试、监控和详细分析。录制的流量可以在测试服务器上回放，并支持请求放大，用于性能测试。github主页: https:&#x2F;&#x2F;github.com&#x2F;buger&#x2F;goreplay   GoReplay安装—linux1234# 下载安装包wget https:&#x2F;&#x2F;github.com&#x2F;buger&#x2F;gor">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-12-17T08:56:36.000Z">
+<meta property="article:modified_time" content="2023-11-30T01:53:47.416Z">
+<meta property="article:author" content="抬头看云">
+<meta property="article:tag" content="java">
+<meta property="article:tag" content="流量录制">
+<meta property="article:tag" content="网络工具">
+<meta property="article:tag" content="性能测试">
+<meta name="twitter:card" content="summary">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://blog.zshunshun.cn/2020/12/17/GoReplay-%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6%E4%B8%8E%E5%9B%9E%E6%94%BE/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="抬头看云的博客" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+  
+  
+    <link href="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.css" rel="stylesheet">
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+<body class="main-center" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      
+      <div class="profile-block text-center">
+        <a id="avatar" href="https://blog.zshunshun.cn" target="_blank">
+          <img class="img-circle img-rotate" src="/images/avatar.jpg" width="200" height="200">
+        </a>
+        <h2 id="name" class="hidden-xs hidden-sm">抬头看云</h2>
+        <h3 id="title" class="hidden-xs hidden-sm hidden-md">强者自救，圣者渡人。</h3>
+        <small id="location" class="text-muted hidden-xs hidden-sm"><i class="icon icon-map-marker"></i> ShangHai, China</small>
+      </div>
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form" method="GET" action="https://www.baidu.com/s?">
+	<div class="input-group">
+    	<input name="wd" type="text" class="form-control search-form-input" placeholder="搜索" />
+	    <span class="input-group-btn">
+	    	<button type="submit" class=" btn btn-flat search-form-submit"><i class="icon icon-search"></i></button>
+	    </span>
+    </div>
+</form>
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-links">
+          <a href="/links">
+            
+            <i class="icon icon-friendship"></i>
+            
+            <span class="menu-title">友链</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about">
+            
+            <i class="icon icon-cup-fill"></i>
+            
+            <span class="menu-title">关于</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/zshunshun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/linux/">linux</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/">网络工具</a><span class="category-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/centos7/" rel="tag">centos7</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/java/" rel="tag">java</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" rel="tag">性能测试</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6/" rel="tag">流量录制</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%A4%BA%E4%BE%8B/" rel="tag">示例</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/" rel="tag">网络工具</a><span class="tag-list-count">1</span></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E8%BF%90%E7%BB%B4/" rel="tag">运维</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/centos7/" style="font-size: 13px;">centos7</a> <a href="/tags/java/" style="font-size: 13px;">java</a> <a href="/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" style="font-size: 13px;">性能测试</a> <a href="/tags/%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6/" style="font-size: 13px;">流量录制</a> <a href="/tags/%E7%A4%BA%E4%BE%8B/" style="font-size: 13px;">示例</a> <a href="/tags/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/" style="font-size: 13px;">网络工具</a> <a href="/tags/%E8%BF%90%E7%BB%B4/" style="font-size: 14px;">运维</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/11/">十一月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2023/06/">六月 2023</a><span class="archive-list-count">1</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/12/">十二月 2020</a><span class="archive-list-count">2</span></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2020/01/">一月 2020</a><span class="archive-list-count">1</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/linux/">linux</a>
+              </p>
+              <p class="item-title">
+                <a href="/2023/11/30/Linux%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E7%A4%BA%E4%BE%8B/" class="title">Linux开机自启示例</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-11-30T11:30:55.000Z" itemprop="datePublished">2023-11-30</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2023/06/27/Windows10%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" class="title">Windows10使用笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2023-06-26T16:45:32.000Z" itemprop="datePublished">2023-06-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/">网络工具</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/17/GoReplay-%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6%E4%B8%8E%E5%9B%9E%E6%94%BE/" class="title">GoReplay-流量录制与回放</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-17T08:56:36.000Z" itemprop="datePublished">2020-12-17</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/linux/">linux</a>
+              </p>
+              <p class="item-title">
+                <a href="/2020/12/14/Centos7-LVM%E7%A9%BA%E9%97%B4%E8%BD%AC%E7%A7%BB/" class="title">Centos7 LVM空间转移</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2020-12-14T01:54:55.000Z" itemprop="datePublished">2020-12-14</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                
+              </p>
+              <p class="item-title">
+                <a href="/2020/01/01/hello-world/" class="title">Hello World</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2019-12-31T16:00:00.000Z" itemprop="datePublished">2020-01-01</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-GoReplay-流量录制与回放" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      GoReplay-流量录制与回放
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2020/12/17/GoReplay-%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6%E4%B8%8E%E5%9B%9E%E6%94%BE/" class="article-date">
+	  <time datetime="2020-12-17T08:56:36.000Z" itemprop="datePublished">2020-12-17</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/">网络工具</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link-link" href="/tags/java/" rel="tag">java</a>, <a class="article-tag-link-link" href="/tags/%E6%80%A7%E8%83%BD%E6%B5%8B%E8%AF%95/" rel="tag">性能测试</a>, <a class="article-tag-link-link" href="/tags/%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6/" rel="tag">流量录制</a>, <a class="article-tag-link-link" href="/tags/%E7%BD%91%E7%BB%9C%E5%B7%A5%E5%85%B7/" rel="tag">网络工具</a>
+  </span>
+
+
+        
+	<span class="article-read hidden-xs">
+	    <i class="icon icon-eye-fill" aria-hidden="true"></i>
+	    <span id="busuanzi_container_page_pv">
+			<span id="busuanzi_value_page_pv">0</span>
+		</span>
+	</span>
+
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2020/12/17/GoReplay-%E6%B5%81%E9%87%8F%E5%BD%95%E5%88%B6%E4%B8%8E%E5%9B%9E%E6%94%BE/#comments" class="article-comment-link">评论</a></span>
+        
+	
+		<span class="post-wordcount hidden-xs" itemprop="wordCount">字数统计: 2k(字)</span>
+	
+	
+		<span class="post-readcount hidden-xs" itemprop="timeRequired">阅读时长: 8(分)</span>
+	
+
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <h3 id="GoReplay简介"><a href="#GoReplay简介" class="headerlink" title="GoReplay简介"></a>GoReplay简介</h3><p>GoReplay是一个开源的网络监控工具，它可以记录你的实时流量，并用于跟踪、负载测试、监控和详细分析。录制的流量可以在测试服务器上回放，并支持请求放大，用于性能测试。<br><strong>github主页:</strong> <a target="_blank" rel="noopener" href="https://github.com/buger/goreplay">https://github.com/buger/goreplay</a>  </p>
+<h3 id="GoReplay安装—linux"><a href="#GoReplay安装—linux" class="headerlink" title="GoReplay安装—linux"></a>GoReplay安装—linux</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 下载安装包</span></span><br><span class="line">wget https://github.com/buger/goreplay/releases/download/v1.1.0/gor_1.1.0_x64.tar.gz</span><br><span class="line"><span class="comment"># 解压 得到二进制文件gor</span></span><br><span class="line">tar -zxvf gor_1.1.0_x64.tar.gz</span><br></pre></td></tr></table></figure>
+<h3 id="GoReplay安装—windows"><a href="#GoReplay安装—windows" class="headerlink" title="GoReplay安装—windows"></a>GoReplay安装—windows</h3><p><strong>文档地址：</strong> <a target="_blank" rel="noopener" href="https://github.com/buger/goreplay/wiki/Running-on-Windows">https://github.com/buger/goreplay/wiki/Running-on-Windows</a>  </p>
+<p>安装nmap工具，进行流量的抓取,地址<a target="_blank" rel="noopener" href="https://nmap.org/npcap/">nmap</a>或者<a target="_blank" rel="noopener" href="https://technet.microsoft.com/en-us/library/cc708322.aspx">technet</a>，直接下载<a target="_blank" rel="noopener" href="https://nmap.org/dist/nmap-7.80-setup.exe">nmap</a>,安装时勾选带有WinPcap的选项<br>win版二进制文件<a target="_blank" rel="noopener" href="https://github.com/buger/goreplay/files/1696582/goreplay.zip">goreplay.zip</a>  </p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、如果没有web服务，可以在本地启动一个8000端口的文件服务器，并实时打印流量在控制台</span></span><br><span class="line">./gor file-server :8000</span><br><span class="line"></span><br><span class="line"><span class="comment"># 2、获取8000端口的包，并打印在控制台</span></span><br><span class="line">sudo ./gor --input-raw :8000 --output-stdout</span><br><span class="line"></span><br><span class="line"><span class="comment"># 获取8000端口的包，并保存在.gor文件中</span></span><br><span class="line">sudo ./gor --input-raw :8080 --output-file=request.gor</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转发：录制8000端口的包，并推送的测试系统</span></span><br><span class="line">sudo ./gor --input-raw :8000 --output-http http://staging.env</span><br><span class="line"></span><br><span class="line"><span class="comment"># 转发至多个地址,默认每一条记录都发送到所有地址</span></span><br><span class="line">sudo gor --input-tcp :28020 --output-http <span class="string">&quot;http://staging.com&quot;</span>  --output-http <span class="string">&quot;http://dev.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 转发至多个地址，轮询发送</span></span><br><span class="line">sudo gor --input-raw :80 --output-http <span class="string">&quot;http://staging.com&quot;</span>  --output-http <span class="string">&quot;http://dev.com&quot;</span> --split-output <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 参数input-raw表示只记录请求信息，而参数--input-raw-track-response可以记录请求和响应</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 默认使用libpcap拦截流量，如果有问题，可以使用替代引擎raw_socket</span></span><br><span class="line">sudo gor --input-raw :80 --input-raw-engine <span class="string">&quot;raw_socket&quot;</span> --output-http <span class="string">&quot;http://staging.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用--input-raw-realip-header可以记录IP，header名称通常是X-Real_IP</span></span><br><span class="line">sudo gor --input-raw :80 --input-raw-realip-header <span class="string">&quot;X-Real-IP&quot;</span> ...</span><br></pre></td></tr></table></figure>
+<h3 id="从文件保存和回放"><a href="#从文件保存和回放" class="headerlink" title="从文件保存和回放"></a>从文件保存和回放</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 写入文件</span></span><br><span class="line">gor --input-raw :80 --output-file requests.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 从文件读取</span></span><br><span class="line">gor --input-file requests.gor --output-http <span class="string">&quot;http://staging.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 分文件存储，以时间格式保存，默认以块的形式追加，将不同的块到不同的文件</span></span><br><span class="line">gor ... --output-file %Y%m%d.log</span><br><span class="line"><span class="comment"># append false</span></span><br><span class="line">20140608_0.log</span><br><span class="line">20140608_1.log</span><br><span class="line">20140609_0.log</span><br><span class="line">20140609_1.log</span><br><span class="line"><span class="comment"># 使用--output-file-append使文件不分块，都追加到同一个文件</span></span><br><span class="line">gor ... --output-file %Y%m%d.log --output-file-append</span><br><span class="line"><span class="comment"># append true</span></span><br><span class="line">20140608.log</span><br><span class="line">20140609.log</span><br><span class="line"></span><br><span class="line"><span class="comment"># 块大小--output-file-size-limit限制块大小--output-file-queue-limit限制队列，如果只限制大小：</span></span><br><span class="line">gor --input-raw :80 --output-file %Y-%m-%d.gz --output-file-size-limit 256m --output-file-queue-limit 0</span><br><span class="line"></span><br><span class="line"><span class="comment"># 文件名可以使用改的时间参数</span></span><br><span class="line">%Y:年 %m:月 %d:日 %H:时 %M:分 %S:秒</span><br><span class="line"></span><br><span class="line"><span class="comment"># 读写SGZIP压缩文件，以.gz结尾</span></span><br><span class="line">...--output-file log.gz</span><br><span class="line"></span><br><span class="line"><span class="comment"># 使用正则表达式读取多个文件，如：log2020*，根据时间戳给所有的文件请求进行排序</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 以多倍的速度进行回放，可以减缓或加快起速度，例：两倍速回放</span></span><br><span class="line">gor --input-file <span class="string">&quot;requests.gor|200%&quot;</span> --output-http <span class="string">&quot;staging.com&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 循环回放，当请求较少时，可以使用--input-file-loop循环回放，当回放完所有文件时，不会停止，而是从第一个重新开始</span></span><br></pre></td></tr></table></figure>
+<h3 id="记录response"><a href="#记录response" class="headerlink" title="记录response"></a>记录response</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 加入参数--input-raw-track-response即可</span></span><br><span class="line">./gor --input-raw :8081 --input-raw-track-response --output-file uat-request%Y%m%d%H.log --output-file-append --http-disallow-url .*order.* .*aliPay.* .*wxPay.* .*refund.*</span><br></pre></td></tr></table></figure>
+<h3 id="远程转发"><a href="#远程转发" class="headerlink" title="远程转发"></a>远程转发</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 转发至127.0.0.1：2020</span></span><br><span class="line">./gor --input-raw :8081 --output-tcp 127.0.0.1:2020 --http-allow-url /admin</span><br><span class="line"><span class="comment"># 从远程接收</span></span><br><span class="line">./gor --input-tcp :2020 --output-file admin-%Y%m%d%H.log --output-file-append</span><br></pre></td></tr></table></figure>
+
+<h3 id="速度限制"><a href="#速度限制" class="headerlink" title="速度限制"></a>速度限制</h3><p>输入和输出都支持速度限制，在上一个已经介绍了读取文件速度限制。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 每秒钟不超过10条</span></span><br><span class="line">gor --input-tcp :28020 --output-http <span class="string">&quot;http://staging.com|10&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 回放速度减缓10%</span></span><br><span class="line">gor --input-raw :80 --output-tcp <span class="string">&quot;replay.local:28020|10%&quot;</span></span><br></pre></td></tr></table></figure>
+<p>可以根据请求头或地址参数设置回放速度限制，只按照这部分进行限速，只支持百分比</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 根据请求头限制速度</span></span><br><span class="line">gor --input-raw :80 --output-tcp <span class="string">&quot;replay.local:28020|10%&quot;</span> --http-header-limiter <span class="string">&quot;X-API-KEY: 10%&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据URL参数限制速度</span></span><br><span class="line">gor --input-raw :80 --output-tcp <span class="string">&quot;replay.local:28020|10%&quot;</span> --http-param-limiter <span class="string">&quot;api_key: 10%&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="请求过滤"><a href="#请求过滤" class="headerlink" title="请求过滤"></a>请求过滤</h3><p>如果只想抓取特定的请求，可以进行过滤，支持URL地址，HTTP header或者HTTP method</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 正则匹配url，转发URL中包含/api的请求</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-allow-url /api</span><br><span class="line"><span class="comment"># 只转发不包含order、aliPay、wxPay、refund，正则表达式</span></span><br><span class="line">./gor --input-raw :8081 --output-file uat-request%Y%m%d%H.log --output-file-append --http-disallow-url .*order.* .*aliPay.* .*wxPay.* .*refund.*</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只转发不包含 /api 的请求</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-disallow-url /api</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只转发 api 版本为 1.0x 的</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-allow-header api-version:^1\.0\d</span><br><span class="line"></span><br><span class="line"><span class="comment"># 只转发请求头 User-Agent 的值是 &quot;Replayed by Gor&quot;的</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-disallow-header <span class="string">&quot;User-Agent: Replayed by Gor&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 根据请求方法（GET、POSt……）进行过滤</span></span><br><span class="line">gor --input-raw :80 --output-http <span class="string">&quot;http://staging.server&quot;</span> \</span><br><span class="line">    --http-allow-method GET \</span><br><span class="line">    --http-allow-method OPTIONS</span><br></pre></td></tr></table></figure>
+<h3 id="请求重写"><a href="#请求重写" class="headerlink" title="请求重写"></a>请求重写</h3><p>gor支持对URL、URL参数和header的重写。可以用于将token进行重写，完成测试。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 重写所有的`/v1/user/&lt;user_id&gt;/ping`为`/v2/user/&lt;user_id&gt;/ping`，可以使用正则表达式，用“:”进行分割</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-rewrite-url /v1/user/([^\\/]+)/ping:/v2/user/<span class="variable">$1</span>/ping</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置URL的参数，如果参数已经存在则覆盖</span></span><br><span class="line">gor --input-raw :8080 --output-http staging.com --http-set-param api_key=1</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置自定义header，如果header已经存在则覆盖</span></span><br><span class="line">gor --input-raw :80 --output-http <span class="string">&quot;http://staging.server&quot;</span> \</span><br><span class="line">    --http-header <span class="string">&quot;User-Agent: Replayed by Gor&quot;</span> \</span><br><span class="line">    --http-header <span class="string">&quot;Enable-Feature-X: true&quot;</span></span><br></pre></td></tr></table></figure>
+<h3 id="分布式配置"><a href="#分布式配置" class="headerlink" title="分布式配置"></a>分布式配置</h3><p>一个服务有台服务器组成集群，gor对每天服务器进行请求转发，将集群的请求集中一起。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 在每一个服务将流量转发至replay.local:28020</span></span><br><span class="line">sudo gor --input-raw :80 --output-tcp replay.local:28020</span><br><span class="line"></span><br><span class="line"><span class="comment"># 回放服务</span></span><br><span class="line">gor --input-tcp replay.local:28020 --output-http http://staging.com</span><br></pre></td></tr></table></figure>
+<p>如果要转发至多个服务中，可以使用–split-output，它可以轮询将入口流量回放到多个服务中</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 将流量轮询回放到两个服务</span></span><br><span class="line">gor --input-raw :80 --split-output --output-tcp replay1.local:28020 --output-tcp replay2.local:28020</span><br></pre></td></tr></table></figure>
+<p>它还可以更智能的将同一个会话传递到同一个服务中，控制流量的从属。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 读取多个文件、10倍速回放、30s循环、根据session分布式流量发送给多个服务</span></span><br><span class="line">gor --input-file logs_from_multiple_machines.*|1000% --input-file-loop --exit-after 30s --recognize-tcp-sessions --split-output --output-tcp worker1.local --output-tcp worker2.local:27017 --output-tcp worker3.local:27017 ...  --output-tcp workerN.local:27017</span><br><span class="line"></span><br><span class="line"><span class="comment"># worker </span></span><br><span class="line">gor --input-tcp :27017 --ouput-http load_test.target</span><br></pre></td></tr></table></figure>
+<h3 id="和Kafka配合使用"><a href="#和Kafka配合使用" class="headerlink" title="和Kafka配合使用"></a>和Kafka配合使用</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 记录数据</span></span><br><span class="line">gor --input-raw :8080 --output-kafka-host <span class="string">&#x27;192.168.0.1:9092,192.168.0.2:9092&#x27;</span> --output-kafka-topic <span class="string">&#x27;kafka-log&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 读取数据</span></span><br><span class="line">gor --input-kafka-host <span class="string">&#x27;192.168.0.1:9092,192.168.0.2:9092&#x27;</span> --input-kafka-topic <span class="string">&#x27;kafka-log&#x27;</span> --output-stdout</span><br></pre></td></tr></table></figure>
+<p>通过–output-kafka-json-format和–input-kafka-json-format可以使用json格式进行读取和推送，但是会影响性能</p>
+<h3 id="参数解释"><a href="#参数解释" class="headerlink" title="参数解释"></a>参数解释</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">--input-raw -用户捕获HTTP流量，应指定IP（接口）以及端口</span><br><span class="line">--input-file - 读取记录的文件，通过其他方式回放</span><br><span class="line">--input-tcp - 将流量从多个转发gor转发到该实例</span><br><span class="line">--output-http - 回放HTTP请求到指定站点，接受基本url</span><br><span class="line">--output-file - 将HTTP请求流量到文件</span><br><span class="line">--output-tcp - 将流量转发到另一个gor实例，使用--input-tcp接受</span><br><span class="line">--output-stdout - 将THHP请求打印到控制台，在调试时使用</span><br></pre></td></tr></table></figure>
+
+<h3 id="不使用root用户运行"><a href="#不使用root用户运行" class="headerlink" title="不使用root用户运行"></a>不使用root用户运行</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 1、将gor文件放到/usr/local/bin中</span></span><br><span class="line"><span class="comment"># 2、创建gor组和用户</span></span><br><span class="line">groupadd gor</span><br><span class="line">useradd -g gor gor</span><br><span class="line"><span class="comment"># 3、将gor文件所属给gor用户，设置权限</span></span><br><span class="line">chgrp gor /usr/<span class="built_in">local</span>/gor</span><br><span class="line">chmod 0750 /usr/lcoa/gor</span><br><span class="line"><span class="comment"># 4、分割root用户特权</span></span><br><span class="line"><span class="built_in">setcap</span> <span class="string">&quot;cap_net_raw,cap_net_admin+eip&quot;</span> /usr/<span class="built_in">local</span>/bin/gor</span><br></pre></td></tr></table></figure>
+<p>至此，可以直接使用gor命令运行</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://blog.zshunshun.cn/2020/12/17/GoReplay-流量录制与回放/" title="GoReplay-流量录制与回放" target="_blank" rel="external">https://blog.zshunshun.cn/2020/12/17/GoReplay-流量录制与回放/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+<div class="panel panel-default panel-badger">
+  <div class="panel-body">
+    <figure class="media">
+      <div class="media-left">
+        <a href="https://blog.zshunshun.cn" target="_blank" class="img-burn thumb-sm visible-lg">
+          <img src="/images/avatar.jpg" class="img-rounded w-full" alt="">
+        </a>
+      </div>
+      <div class="media-body">
+        <h3 class="media-heading"><a href="https://blog.zshunshun.cn" target="_blank"><span class="text-dark">抬头看云</span><small class="ml-1x">强者自救，圣者渡人。</small></a></h3>
+        <div>强者自救，圣者渡人。</div>
+      </div>
+    </figure>
+  </div>
+</div>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2023/06/27/Windows10%E4%BD%BF%E7%94%A8%E7%AC%94%E8%AE%B0/" title="Windows10使用笔记"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    <li class="next">
+      <a href="/2020/12/14/Centos7-LVM%E7%A9%BA%E9%97%B4%E8%BD%AC%E7%A7%BB/" title="Centos7 LVM空间转移"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/zshunshun" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="/atom.xml" target="_blank" title="Rss" data-toggle=tooltip data-placement=top><i class="icon icon-rss"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+
+<script src="/js/plugin.min.js"></script>
+
+
+<script src="/js/application.js"></script>
+
+
+
+    <script>
+(function ($) {
+    $('.search-form').on('submit', function (e) {
+        var keyword = $('.search-form-input[name="wd"]').val();
+        window.location = 'https://www.baidu.com/s?wd=site:blog.zshunshun.cn ' + keyword;
+        return false;
+    });
+})(jQuery);
+</script>
+
+
+
+
+   
+<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: 'e23f870510f8b006eed1',
+    clientSecret: '3e596d1295c31db99299a6d9058209d8160fd0a5',
+    repo: 'personalBlogCommentRecord',
+    owner: 'zshunshun',
+    admin: ['zshunshun'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+  <script src="//cdn.jsdelivr.net/npm/@fancyapps/fancybox@3.3.5/dist/jquery.fancybox.min.js"></script>
+  <script>
+  //利用 FancyBox 实现点击图片放大
+  $(document).ready(function() {
+    $('article img').not('[hidden]').not('.panel-body img').each(function() {
+      var $image = $(this);
+      var imageCaption = $image.attr('alt');
+      var $imageWrapLink = $image.parent('a');
+      if ($imageWrapLink.length < 1) {
+        var src = this.getAttribute('src');
+        var idx = src.lastIndexOf('?');
+        if (idx != -1) {
+          src = src.substring(0, idx);
+        }
+        $imageWrapLink = $image.wrap('<a href="' + src + '"></a>').parent('a');
+      }
+      $imageWrapLink.attr('data-fancybox', 'images');
+      if (imageCaption) {
+        $imageWrapLink.attr('data-caption', imageCaption);
+      }
+    });
+    $().fancybox({
+      selector: '[data-fancybox="images"]',
+      hash: false,
+      loop: false,
+    });
+  });
+  </script>
+
+
+
+
+
+</body>
+</html>
